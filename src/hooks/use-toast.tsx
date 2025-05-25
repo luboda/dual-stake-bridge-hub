@@ -1,5 +1,5 @@
 
-import { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 
 // Toast types
 export type ToastProps = {

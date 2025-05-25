@@ -1,3 +1,4 @@
+
 import { useState, useCallback, useEffect } from "react";
 
 // Toast types
@@ -41,8 +42,24 @@ export function useToast() {
   // Add a new toast
   const addToast = useCallback((options: ToastOptions) => {
     const id = createToastId();
-    const toast = { id, ...options };
-    setToasts((prevToasts) => [...prevToasts, toast]);
+    
+    // Convert ToastActionType to React.ReactNode if action is provided
+    const toastProps: ToastProps = {
+      id,
+      title: options.title,
+      description: options.description,
+      variant: options.variant,
+      action: options.action ? (
+        <button
+          onClick={options.action.onClick}
+          aria-label={options.action.altText}
+        >
+          {options.action.children}
+        </button>
+      ) : undefined,
+    };
+    
+    setToasts((prevToasts) => [...prevToasts, toastProps]);
 
     // Auto-dismiss toast after duration
     const duration = options.duration || DEFAULT_TOAST_DURATION;
